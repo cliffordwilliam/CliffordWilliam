@@ -14,7 +14,7 @@ export const getCliffordWilliamDb = async () => {
 export const getUserByEmail = async (email: string) => {
   const db: Db = await getCliffordWilliamDb();
   const user = await db.collection(COLLECTION_USER).findOne({ email: email });
-  console.log(user, "MODEL");
+  return user;
 };
 
 export const postUser = async (input: UserInput) => {

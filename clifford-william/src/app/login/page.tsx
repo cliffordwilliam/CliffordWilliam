@@ -1,5 +1,7 @@
+import { compare, sign } from "@/db/helper";
 import { getUserByEmail } from "@/db/model/user";
-import { ZodUserInput } from "@/db/types";
+import { Payload, ZodUserInput } from "@/db/types";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const Page = () => {
@@ -21,8 +23,25 @@ const Page = () => {
       const errFinalMessage = `${errPath} - ${errMessage}`;
       throw new Error(errFinalMessage);
     }
-    // no user? wrong password?
+    // no user? wrong password? throw
     const user = await getUserByEmail(zRes.data.email);
+    if (!user || !compare(zRes.data.password, user.password)) {
+      throw new Error("Invalid credentials");
+    }
+    // payload -> token
+    const payload: Payload = {
+      email: zRes.data.email,
+    };
+    const token = sign(payload);
+    // save token to cookie
+    cookies().set("token", token, {
+      httpOnly: true,
+      secure: false,
+      // expires: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+      sameSite: "strict",
+    });
+    // kick dashboard
+    return redirect(`/dashboard`);
   };
   return (
     <main>

@@ -13,7 +13,7 @@ export type Response<T> = {
 
 // PAYLOAD
 export type Payload = {
-  id: string;
+  email: string;
 };
 
 // USER
@@ -30,4 +30,7 @@ export type UserOutput = Omit<User, "password">;
 export type UserInput = Omit<User, "_id">;
 
 // BLOG
-// TODO ...
+export type Blog = {
+  _id: ObjectId;
+  title: string;
+};
