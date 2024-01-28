@@ -1,5 +1,7 @@
 import { getUserByEmail, postUser } from "@/db/model/user";
 import { ZodUserInput } from "@/db/types";
+import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const Page = () => {
@@ -26,17 +28,17 @@ const Page = () => {
       email: zRes.data.email,
       password: zRes.data.password,
     });
-    console.log(user);
   };
   return (
     <main>
-      <form action={register}>
-        <label htmlFor="email">Email</label>
-        <input type="text" id="email" name="email" />
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
-        <button>Register</button>
-      </form>
+      <div className="container mx-auto my-8 p-8">
+        <Image
+          src="/fastgenomics.png"
+          width={500}
+          height={500}
+          alt="Picture of the author"
+        />
+      </div>
     </main>
   );
 };

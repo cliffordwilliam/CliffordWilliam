@@ -34,3 +34,7 @@ export type Blog = {
   _id: ObjectId;
   title: string;
 };
+export const ZodBlogInput = z.object({
+  title: z.string().min(1),
+});
+export type BlogInput = Omit<Blog, "_id">;

@@ -1,6 +1,6 @@
 import { Db, ObjectId } from "mongodb";
 import { getClient } from "../config";
-import { Blog, UserInput, UserOutput } from "../types";
+import { Blog, BlogInput, UserInput, UserOutput } from "../types";
 import { hash } from "../helper";
 
 const COLLECTION_BLOG = "blogs";
@@ -18,4 +18,16 @@ export const getBlogs = async () => {
     .find()
     .toArray()) as Blog[];
   return blogs;
+};
+
+export const postBlog = async (input: BlogInput) => {
+  // POST
+  const db: Db = await getCliffordWilliamDb();
+  const response = await db.collection(COLLECTION_BLOG).insertOne(input);
+  // return -> response + userHashed -> UserOutput
+  const { ...addedBlog } = {
+    ...input,
+    _id: response.insertedId as ObjectId,
+  };
+  return addedBlog as Blog;
 };
